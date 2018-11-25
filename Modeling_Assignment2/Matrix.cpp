@@ -52,6 +52,7 @@ void Matrix::printMatrix()
 	}
 	cout << "******************************************************" << endl;
 }
+
 double** Matrix::getMatrix() {
 	return mat;
 }
