@@ -127,21 +127,26 @@ Matrix buildMatrixZ() {
 	return Z;
 }
 Matrix buildMatrixA(Matrix G, Matrix C,Matrix B, Matrix D) {
-	Matrix A(nodecnt + (int)VoltageSources.size() + (int)Inductors.size() + 1, (nodecnt + (int)VoltageSources.size() + (int)Inductors.size() + 1));
+	Matrix A(nodecnt + (int)VoltageSources.size() + (int)Inductors.size()+1, (nodecnt + (int)VoltageSources.size() + (int)Inductors.size()+1));
 	
 	for (int i = 1; i <= nodecnt; ++i) {
-		for (int j = 1; j <= nodecnt; ++j)A.set(i,j, G.get(i,j));
+		for (int j = 1; j <= nodecnt; ++j)A.set(i-1,j-1, G.get(i,j));
 	}
 	for (int i = nodecnt + 1; i < A.getrows(); ++i) {
-		for (int j = 1; j <= nodecnt; ++j)A.set(i,j ,C.get(i - nodecnt,j));
+		for (int j = 1; j <= nodecnt; ++j)A.set(i-1,j-1 ,C.get(i - nodecnt,j));
 	}
 	for (int i = 1; i <= nodecnt; ++i) {
-		for (int j = nodecnt + 1; j < A.getrows(); ++j)A.set(i,j,  B.get(i,j - nodecnt));
+		for (int j = nodecnt + 1; j < A.getrows(); ++j)A.set(i-1,j-1,  B.get(i,j - nodecnt));
 	}
 	for (int i = nodecnt + 1; i < A.getrows(); ++i) {
-		for (int j = nodecnt + 1; j < A.getrows(); ++j)A.set(i,j, D.get(i - nodecnt,j - nodecnt));
+		for (int j = nodecnt + 1; j < A.getrows(); ++j)A.set(i-1,j-1, D.get(i - nodecnt,j - nodecnt));
 	}
-	A.printMatrix();
+	for (int i = 0; i < A.getrows()-1; ++i) {
+		for (int j = 0; j < A.getrows()-1; ++j)cout << A.get(i, j) << " ";
+		cout << endl;
+	}
+	cout << endl;
+	//A.printMatrix();
 	return A;
 }
 void ouputAnswer(Matrix A,Matrix B, Matrix C, Matrix D, Matrix G, Matrix Z) {
@@ -151,16 +156,27 @@ void ouputAnswer(Matrix A,Matrix B, Matrix C, Matrix D, Matrix G, Matrix Z) {
 	if ((int)Capacitors.size() == 0 && (int)Inductors.size() == 0) {
 		Matrix X(A.getrows(),2); Matrix Inv(A.getrows(),A.getrows());
 		Matrix temp1;
-		temp1.MatrixInversion(A.getMatrix(), A.getrows(), Inv.getMatrix());
-		temp1.MatrixMultiplication(Inv.getMatrix(), A.getrows(), Z.getMatrix(), X.getMatrix());
-		for (int i = 1; i <=nodecnt; ++i) {
-			output << "V" << i << endl;
-			output << X.get(i, 1);
+		temp1.MatrixInversion(A.getMatrix(), A.getrows()-1, Inv.getMatrix());
+		for (int i = 0; i < Inv.getrows()-1; ++i) {
+			for (int j = 0; j < Inv.getrows()-1; ++j)cout << Inv.get(i,j) << " ";
+			cout << endl;
+		}
+		//temp1.MatrixMultiplication(Inv.getMatrix(), A.getrows(), Z.getMatrix(), X.getMatrix());
+		for (int i = 0; i < Inv.getrows()-1; ++i) {
+			double sum = 0;
+			for (int j = 0; j < Inv.getrows()-1; ++j) {
+				sum += Inv.get(i, j)*Z.get(j + 1,1);
+			}
+			X.set(i, 0, sum);
+		}
+		for (int i = 0; i <nodecnt; ++i) {
+			output << "V" << i+1 << endl;
+			output << X.get(i, 0);
 			output << endl << endl;
 		}
 		for (int i = 0; i < ((int)VoltageSources.size() + (int)Inductors.size()); ++i) {
 			output << "Ivsrc" << i + 1 << endl;
-			output << X.get(nodecnt+i+1, 1);
+			output << X.get(nodecnt+i, 0);
 			output << endl << endl;
 		}
 	}
