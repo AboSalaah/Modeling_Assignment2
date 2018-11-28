@@ -39,7 +39,7 @@ int nodecnt;
 const double TIMESTEP = 0.1;
 const int NUMBEROFITERATIONS = 20;
 void readFile() {
-	ifstream input("input2.txt");
+	ifstream input("input1.txt");
 	string compType; int src, dis; double v, init;
 	while (input >> compType >> src >> dis >> v >> init) {
 		if(compType[0]=='R')
@@ -129,7 +129,7 @@ Matrix buildMatrixZ(bool f, Matrix X) {
 		if(f==0)Z.set(nodecnt + (int)VoltageSources.size() + i + 1, 1, (-1 * (Inductors[i].initialVal)*(Inductors[i].val / TIMESTEP)));
 		else Z.set(nodecnt + (int)VoltageSources.size() + i + 1,1, (-1 * (X.get(nodecnt + (int)VoltageSources.size() + i+1,0))*(Inductors[i].val / TIMESTEP)));
 	}
-	Z.printMatrix();
+	//Z.printMatrix();
 	return Z;
 }
 Matrix buildMatrixA(Matrix G, Matrix C,Matrix B, Matrix D) {
@@ -172,16 +172,21 @@ void ouputAnswer(Matrix A,Matrix B, Matrix C, Matrix D, Matrix G, Matrix Z) {
 	temp1.MatrixInversion(A.getMatrix(), A.getrows()-1 , Inv.getMatrix());
 	
 	if ((int)Capacitors.size() == 0 && (int)Inductors.size() == 0) {
+		
 		//temp1.MatrixMultiplication(Inv.getMatrix(), A.getrows(), Z.getMatrix(), X.getMatrix());
 		Matrix X = getMatrixX(Inv,Z);
-		for (int i = 0; i <nodecnt; ++i) {
-			output << "V" << i+1 << endl;
+		/*for (int i = 1; i < A.getrows() ; i++) {
+			cout << X.get(i, 0) << endl;
+		}
+		*/
+		for (int i = 1; i <=nodecnt; ++i) {
+			output << "V" << i << endl;
 			output << X.get(i, 0);
 			output << endl << endl;
 		}
 		for (int i = 0; i < ((int)VoltageSources.size() + (int)Inductors.size()); ++i) {
-			output << "Ivsrc" << i + 1 << endl;
-			output << X.get(nodecnt+i, 0);
+			output << "Ivsrc" << i+1  << endl;
+			output << X.get(nodecnt+i+1, 0);
 			output << endl << endl;
 		}
 	}
@@ -203,22 +208,22 @@ void ouputAnswer(Matrix A,Matrix B, Matrix C, Matrix D, Matrix G, Matrix Z) {
 		for (int i = 1; i <= nodecnt; ++i) {
 			output << "V" << i<< endl;
 			for (int j = 0; j < output_data_V[i].size(); ++j) {
-				output << cnt<<" "<<output_data_V[i][j];
+				output << cnt<<" " << setprecision(15) <<output_data_V[i][j];
 				output << endl;
 				cnt += 0.1;
 			}
-			cout << endl;
+
+			output << endl;
 		}
-		cout << endl;
 		cnt = 0.1;
 		for (int i = 0; i < ((int)VoltageSources.size() + (int)Inductors.size()); ++i) {
-			output << "I_L" << i + 1 << endl;
+			output << "I_L" << i << endl;
 			for (int j = 0; j < output_data_I[i + 1].size(); ++j) {
-				output << cnt<<" "<<output_data_I[i + 1][j];
+				output << cnt<<" "<< setprecision(15)<<output_data_I[i + 1][j];
 				output << endl;
 				cnt += 0.1;
 			}
-			cout << endl;
+			output << endl;
 		}
 
 	}
@@ -234,5 +239,6 @@ int main() {
 	Matrix temp;
 	Matrix Z=buildMatrixZ(0,temp);
 	Matrix A=buildMatrixA(G,C,B,D);
+	
 	ouputAnswer(A, B, C, D, G, Z);
 }

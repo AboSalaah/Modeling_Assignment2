@@ -8,7 +8,7 @@ c:\users\ahmed saleh\documents\visual studio 2015\projects\modeling_assignment2\
 c:\users\ahmed saleh\documents\visual studio 2015\projects\modeling_assignment2\modeling_assignment2\source.cpp(114): warning C4018: '<': signed/unsigned mismatch
 c:\users\ahmed saleh\documents\visual studio 2015\projects\modeling_assignment2\modeling_assignment2\source.cpp(125): warning C4018: '<': signed/unsigned mismatch
 c:\users\ahmed saleh\documents\visual studio 2015\projects\modeling_assignment2\modeling_assignment2\source.cpp(128): warning C4018: '<': signed/unsigned mismatch
-c:\users\ahmed saleh\documents\visual studio 2015\projects\modeling_assignment2\modeling_assignment2\source.cpp(205): warning C4018: '<': signed/unsigned mismatch
-c:\users\ahmed saleh\documents\visual studio 2015\projects\modeling_assignment2\modeling_assignment2\source.cpp(216): warning C4018: '<': signed/unsigned mismatch
+c:\users\ahmed saleh\documents\visual studio 2015\projects\modeling_assignment2\modeling_assignment2\source.cpp(210): warning C4018: '<': signed/unsigned mismatch
+c:\users\ahmed saleh\documents\visual studio 2015\projects\modeling_assignment2\modeling_assignment2\source.cpp(221): warning C4018: '<': signed/unsigned mismatch
   Modeling_Assignment2.vcxproj -> C:\Users\Ahmed Saleh\documents\visual studio 2015\Projects\Modeling_Assignment2\Debug\Modeling_Assignment2.exe
   Modeling_Assignment2.vcxproj -> C:\Users\Ahmed Saleh\documents\visual studio 2015\Projects\Modeling_Assignment2\Debug\Modeling_Assignment2.pdb (Full PDB)

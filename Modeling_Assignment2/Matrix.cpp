@@ -153,10 +153,11 @@ double Matrix::CalcDeterminant(double **mat, int order)
 
  void Matrix::MatrixMultiplication(double **A, int order, double **B, double **result)
 {
-	 for (int i = 1; i < order; ++i) {
+	 /*for (int i = 1; i < order; ++i) {
 		 cout << B[i][1] << endl;;
 		 
 	}
+	*/
 	for (int i = 0; i < order; i++)
 	{
 		result[i][0] = 0;
